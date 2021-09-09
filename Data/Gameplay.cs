@@ -22,12 +22,16 @@ namespace Tetris
         private int lines = 0;
         private int expMomultiplier = 0;
 
+        private GameControlKeys _lastkeyStatus;
+
         private bool _pauseGame = false;
         public bool PauseGame
         {
             get { return _pauseGame; }
             set { _pauseGame = value; }
         }
+
+        
 
         public Gameplay()
         {
@@ -105,7 +109,7 @@ namespace Tetris
         }
 
         /// <summary>
-        /// Изменение игры в один "тик" игрового времени
+        /// Изменение состояния в один "тик" игрового времени
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -157,11 +161,13 @@ namespace Tetris
             {
                 case GameControlKeys.Left: if (!this._pauseGame) Move(-1, 0); break;
                 case GameControlKeys.Rigth: if (!this._pauseGame) Move(1, 0); break;
-                case GameControlKeys.Rotate: RotateShape(); break;
-                case GameControlKeys.Down: gameSpeed = fastSpeed; break;
+                case GameControlKeys.Rotate: if (!this._pauseGame) { if (_lastkeyStatus != key)  RotateShape(); } break;
+                case GameControlKeys.Down: { gameSpeed = fastSpeed; } break;
                 case GameControlKeys.Pause: _pauseGame = !_pauseGame; break;
                 default: gameSpeed = startSpeed - (20 * level); break;
             }
+
+            _lastkeyStatus = key;
         }
 
         /// <summary>
@@ -220,7 +226,6 @@ namespace Tetris
                     SetShape();
                 }
             }
-            FillField();
         }
 
         /// <summary>

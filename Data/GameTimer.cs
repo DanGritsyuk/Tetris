@@ -19,9 +19,9 @@ namespace Tetris
 
         private void OnTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-
+            Stop();
             _CheckAction();
-            if (!_requestStop)
+            if (_requestStop)
             {
                 _timer.Start();//restart the timer
             }

@@ -66,6 +66,7 @@
             this.btnPause.TabIndex = 3;
             this.btnPause.Text = "Пауза";
             this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
             // 
             // lblLevelText
             // 

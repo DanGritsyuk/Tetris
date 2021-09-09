@@ -42,9 +42,7 @@ namespace Tetris
         private void btnStart_Click(object sender, EventArgs e)
         {
             if (game != null) { StopGame(); }
-            else { ptbNextShape.Visible = true; }
-
-            ptbField.Focus();
+            else { btnPause.Enabled = true; }
             StartGame();
         }
 
@@ -54,6 +52,9 @@ namespace Tetris
 
         private void StartGame()
         {
+            if (!ptbNextShape.Visible) ptbNextShape.Visible = true;
+            ptbField.Focus();
+
             game = new Gameplay();
             TickTimer.Start();
             controllerTimer = new GameTimer(CheckKeyboardtStatus);
@@ -78,7 +79,11 @@ namespace Tetris
         private void CheckKeyboardtStatus()
         {
             var gameKey = GameController.GameControllerAction(key, keyboardSettings);
-            if (gameKey != null) { game.KeyDown(gameKey.Value); }
+            if (gameKey != null) 
+            { 
+                game.KeyDown(gameKey.Value);
+                ptbField.Image = game.FillField();
+            }
         }
 
         #region XBox gamepad
@@ -195,6 +200,11 @@ namespace Tetris
         }
         */
         #endregion
+
+        private void btnPause_Click(object sender, EventArgs e)
+        {
+            game.PauseGame = !game.PauseGame;
+        }
     }
 }
 
